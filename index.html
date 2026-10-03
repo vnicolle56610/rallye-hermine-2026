@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d2940">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Rallye de l’Hermine — Voyage autour du monde</title>
+<style>
+:root{--navy:#0d2940;--red:#c93034;--paper:#fffdf8;--muted:#6b7680;--shadow:0 20px 55px rgba(13,41,64,.13)}
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:linear-gradient(180deg,#eef6fa,#f8f3eb);
+ font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ color:#17232c
+}
+main{max-width:1180px;margin:auto;padding:16px 12px 44px}
+header{display:flex;align-items:center;justify-content:space-between;padding:8px 4px 16px;gap:14px}
+.brand{font:600 clamp(18px,4vw,26px)/1 Georgia,"Times New Roman",serif;color:var(--navy);letter-spacing:.07em}
+.theme{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);border-left:2px solid var(--red);padding-left:12px}
+
+.visual{
+ position:relative;
+ overflow:hidden;
+ border-radius:28px;
+ box-shadow:var(--shadow);
+ background:var(--paper);
+}
+.visual img{
+ display:block;
+ width:100%;
+ height:auto;
+ user-select:none;
+ -webkit-user-drag:none;
+}
+
+/* Hotspots are expressed as percentages of the 1536×1024 artwork.
+   They therefore stay aligned when the image scales responsively. */
+.hotspot{
+ position:absolute;
+ display:block;
+ border-radius:18px;
+ background:rgba(255,255,255,0);
+ z-index:5;
+ outline:none;
+}
+.hotspot:focus-visible{
+ outline:4px solid rgba(201,48,52,.75);
+ outline-offset:2px;
+ background:rgba(255,255,255,.08);
+}
+@media (hover:hover){
+ .hotspot:hover{
+   background:rgba(255,255,255,.07);
+   box-shadow:inset 0 0 0 2px rgba(13,41,64,.22);
+ }
+}
+
+/* Red "Ajouter à l'agenda" button */
+.hotspot-calendar{
+ left:23.0%;
+ top:74.1%;
+ width:15.0%;
+ height:5.4%;
+}
+/* Google Maps button */
+.hotspot-google{
+ left:69.0%;
+ top:74.0%;
+ width:12.4%;
+ height:5.6%;
+}
+/* Apple Plans button */
+.hotspot-apple{
+ left:69.0%;
+ top:80.0%;
+ width:12.4%;
+ height:5.3%;
+}
+/* Reservation panel: copies response address */
+.hotspot-rsvp{
+ left:11.0%;
+ top:87.4%;
+ width:72.0%;
+ height:10.0%;
+ border-radius:24px;
+}
+
+.helper{
+ margin:16px auto 0;
+ max-width:760px;
+ padding:13px 16px;
+ border-radius:16px;
+ background:rgba(255,253,248,.92);
+ color:var(--muted);
+ text-align:center;
+ font-size:13px;
+ box-shadow:0 8px 24px rgba(13,41,64,.05)
+}
+.helper strong{color:var(--navy)}
+
+.toast{
+ position:fixed;
+ left:50%;
+ bottom:22px;
+ transform:translate(-50%,20px);
+ background:var(--navy);
+ color:#fff;
+ border-radius:999px;
+ padding:11px 17px;
+ font-size:13px;
+ opacity:0;
+ pointer-events:none;
+ transition:.25s;
+ z-index:50;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+footer{text-align:center;color:var(--muted);font-size:12px;padding:26px 8px 0}
+
+@media(max-width:700px){
+ main{padding:10px 8px 34px}
+ .theme{display:none}
+ .visual{border-radius:18px}
+ .helper{font-size:12px}
+}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="brand">✦ RALLYE DE L’HERMINE</div>
+  <div class="theme">Voyage autour du monde</div>
+</header>
+
+<section class="visual" aria-label="Invitation interactive du Rallye de l’Hermine">
+  <img src="assets/rallye-hermine-visuel.png"
+       alt="Rallye de l’Hermine — Voyage autour du monde — samedi 28 novembre 2026">
+
+  <a class="hotspot hotspot-calendar"
+     href="rallye-hermine.ics"
+     download
+     aria-label="Ajouter le Rallye de l’Hermine à mon agenda"
+     title="Ajouter à l’agenda"></a>
+
+  <a class="hotspot hotspot-google"
+     href="https://www.google.com/maps/search/?api=1&query=20%20rue%20Larmor%20Gwened%2056000%20Vannes"
+     target="_blank" rel="noopener"
+     aria-label="Ouvrir l’itinéraire vers le Manoir de Larmor dans Google Maps"
+     title="Itinéraire Google Maps"></a>
+
+  <a class="hotspot hotspot-apple"
+     href="https://maps.apple.com/?q=20%20rue%20Larmor%20Gwened%2056000%20Vannes"
+     target="_blank" rel="noopener"
+     aria-label="Ouvrir l’itinéraire vers le Manoir de Larmor dans Plans Apple"
+     title="Plans Apple"></a>
+
+  <button class="hotspot hotspot-rsvp"
+          id="copyAddress"
+          type="button"
+          aria-label="Copier l’adresse de réponse"
+          title="Copier l’adresse de réponse"></button>
+</section>
+
+<div class="helper">
+  Les commandes sont intégrées directement au visuel :
+  <strong>Ajouter à l’agenda</strong>, <strong>Google Maps</strong>,
+  <strong>Plans Apple</strong>. Un clic sur le bandeau
+  <strong>Réservation obligatoire</strong> copie l’adresse de réponse.
+</div>
+
+<footer>Rallye de l’Hermine · Invitation privée · Samedi 28 novembre 2026</footer>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite">Adresse de réponse copiée</div>
+
+<script>
+const copyButton=document.getElementById('copyAddress');
+const toast=document.getElementById('toast');
+const address="Madame Vincent Nicolle\n7, rue de l’île Drenec\n56610 Arradon";
+
+copyButton.addEventListener('click', async ()=>{
+  try{
+    await navigator.clipboard.writeText(address);
+  }catch(e){
+    const t=document.createElement('textarea');
+    t.value=address;
+    document.body.appendChild(t);
+    t.select();
+    document.execCommand('copy');
+    t.remove();
+  }
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),1900);
+});
+</script>
+</body>
+</html>

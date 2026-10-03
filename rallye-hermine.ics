@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Rallye de l'Hermine//FR
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:rallye-hermine-20261128@invitation
+DTSTAMP:20261003T120000Z
+DTSTART;TZID=Europe/Paris:20261128T193000
+DTEND;TZID=Europe/Paris:20261129T000000
+SUMMARY:Rallye de l'Hermine — Voyage autour du monde
+LOCATION:Manoir de Larmor\, 20 rue Larmor Gwened\, 56000 Vannes
+DESCRIPTION:Rallye de l'Hermine — thème Voyage autour du monde. Réservation obligatoire avant le 10 novembre 2026. Réponse à adresser à Madame Vincent Nicolle\, 7 rue de l'île Drenec\, 56610 Arradon.
+END:VEVENT
+END:VCALENDAR
